@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - cherry
+  - trap
+  - enemy
+  - EnemyAggro
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Player
+  - Water
+  - UI
+  - Ground
+  - Others
+  - Background
+  - enemy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 4118025267
+    locked: 0
+  - name: Ground
+    uniqueID: 996741525
+    locked: 0
+  - name: Others
+    uniqueID: 2622837211
+    locked: 0
+  - name: Player
+    uniqueID: 721863901
+    locked: 0
+  - name: VFX
+    uniqueID: 2683263201
+    locked: 0
+  - name: enemy
+    uniqueID: 2661949301
+    locked: 0
