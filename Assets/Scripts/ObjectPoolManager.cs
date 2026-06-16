@@ -24,7 +24,7 @@ public class ObjectPoolManager : MonoBehaviour
     [System.Serializable]
     public class PoolConfig
     {
-        public string poolKey;       // 池子的名字，例如 "FlashEffect", "GhostTrail"
+        public string poolKey;       // 池子的名字，FlashEffect,GhostTrail
         public string resourcesPath; // 放在 Resources 文件夹下的路径
         public int initCount = 10;   // 预加载数量
     }
@@ -34,10 +34,10 @@ public class ObjectPoolManager : MonoBehaviour
     {
         new PoolConfig { poolKey = "FlashEffect", resourcesPath = "ItemFlashEffect", initCount = 10 },
         new PoolConfig { poolKey = "Ghost_Trail", resourcesPath = "GhostTrail", initCount = 8 } 
-        // 以后想加对象池子，直接在下面再写一行即可，不需要动核心逻辑
+        // 加对象池子，直接在下面加
     };
 
-    // 核心大本营：每个名字对应一个属于自己的物体列表
+    // 每个名字对应一个属于自己的物体列表
     private Dictionary<string, List<GameObject>> poolDictionary;
     // 缓存加载进来的预制体，避免重复去Resources里读盘
     private Dictionary<string, GameObject> prefabCache;
@@ -66,7 +66,7 @@ public class ObjectPoolManager : MonoBehaviour
 
         foreach (var config in poolConfigs)
         {
-            // 1. 去 Resources 文件夹加载预制体
+            //去 Resources 文件夹加载预制体
             GameObject prefab = Resources.Load<GameObject>(config.resourcesPath);
             if (prefab == null)
             {
@@ -77,7 +77,7 @@ public class ObjectPoolManager : MonoBehaviour
             prefabCache.Add(config.poolKey, prefab);
             poolDictionary.Add(config.poolKey, new List<GameObject>());
 
-            // 2. 预先生成初始数量
+            // 预先生成初始数量
             for (int i = 0; i < config.initCount; i++)
             {
                 CreateNewObject(config.poolKey);
@@ -96,7 +96,7 @@ public class ObjectPoolManager : MonoBehaviour
         return obj;
     }
 
-    // 【核心接口】：取出逻辑 (Get)
+    // 取出逻辑
     public GameObject GetPooledObject(string key, Vector3 position, Quaternion rotation)
     {
         if (!poolDictionary.ContainsKey(key))
@@ -107,7 +107,7 @@ public class ObjectPoolManager : MonoBehaviour
 
         List<GameObject> list = poolDictionary[key];
 
-        // 1. 遍历查找闲置对象
+        // 遍历查找闲置对象
         for (int i = 0; i < list.Count; i++)
         {
             if (list[i] != null && !list[i].activeInHierarchy)
@@ -120,7 +120,7 @@ public class ObjectPoolManager : MonoBehaviour
             }
         }
 
-        // 2. 动态扩容
+        //动态扩容
         GameObject newObj = CreateNewObject(key);
         if (newObj != null)
         {

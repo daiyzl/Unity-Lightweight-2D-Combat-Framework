@@ -108,7 +108,7 @@ public class PlayerLife : MonoBehaviour
         float dashTimer = 0f;
         while (dashTimer < dashTime)
         {
-            // --- 核心动作：从对象池拿出残影并配置 ---
+            //从对象池拿出残影并配置
             GameObject ghost = ObjectPoolManager.Instance.GetPooledObject("Ghost_Trail", transform.position, Quaternion.identity); // 使用对象池单例GetPooledObject方法
             if (ghost != null)
             {
@@ -124,7 +124,7 @@ public class PlayerLife : MonoBehaviour
             yield return new WaitForSeconds(ghostTrailInterval); // 协程等待，不卡主线程
             dashTimer += ghostTrailInterval;
         }
-        //冲刺结束，核心扫尾工作（解除锁定）
+        //冲刺结束解除锁定
         rb.gravityScale = originalGravity; // 恢复重力
         rb.velocity = Vector2.zero;        // 刹车
 

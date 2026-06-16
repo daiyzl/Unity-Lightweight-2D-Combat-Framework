@@ -32,7 +32,7 @@ public class PlayerAttack : MonoBehaviour
     {
         lastAttackTime = Time.time;
 
-        // 1. 生成视觉剑气
+        //生成视觉剑气
         GameObject slash = Instantiate(slashPrefab, attackPoint.position, Quaternion.identity);
 
         // 如果玩家面朝左边，把剑气也翻转过去
@@ -41,12 +41,12 @@ public class PlayerAttack : MonoBehaviour
             slash.transform.localScale = new Vector3(-slash.transform.localScale.x, slash.transform.localScale.y, 1);
         }
 
-        // 2. 物理判定：获取圆圈内的所有敌人
+        // 物理判定：获取圆圈内的所有敌人
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemy);
 
         bool hitSomeone = false;
 
-        // 3. 结算伤害
+        //结算伤害
         foreach (Collider2D enemy in hitEnemies)
         {
                 // 获取敌人身上的 FSM 大管家组件
@@ -63,7 +63,7 @@ public class PlayerAttack : MonoBehaviour
             hitSomeone = true;
         }
 
-        // 4. 🌟 灵魂注入：如果真的砍中了肉，触发果汁效果！
+        // 灵魂注入：如果真的砍中了肉，触发果汁效果！
         if (hitSomeone)
         {
             // 砍中瞬间：世界时间停止 0.05 秒，屏幕剧烈震动 0.1 秒！
