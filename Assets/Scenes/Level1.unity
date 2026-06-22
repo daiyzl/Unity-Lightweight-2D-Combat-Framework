@@ -787,6 +787,7 @@ GameObject:
   - component: {fileID: 410724587}
   - component: {fileID: 410724588}
   - component: {fileID: 410724589}
+  - component: {fileID: 410724590}
   m_Layer: 9
   m_Name: enemy
   m_TagString: enemy
@@ -972,6 +973,7 @@ MonoBehaviour:
     moveSpeed: 1
     chaseSpeed: 2
     idleTime: 2
+    defence: 0
     PatrolPoints:
     - {fileID: 468761587}
     - {fileID: 568280566}
@@ -1002,6 +1004,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentDamage: 1
+--- !u!114 &410724590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410724580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68e23ff5b14cd354f91ad7b7d00ffcbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  luaConfigFile: {fileID: 4900000, guid: 0ee2ee6b6fbeb0641b4701c83d20a90a, type: 3}
+  targetFSM: {fileID: 410724588}
 --- !u!1 &433090638 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6220784090846110114, guid: b55ec6c83bed66a4289bc09ea9f963ed, type: 3}
@@ -1366,7 +1382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackCooldown: 0.4
-  slashPrefab: {fileID: 3902657620449181238, guid: ef6c590c1b1ab4d4db1b08a9c28e0423, type: 3}
+  slashPrefab: {fileID: 7562833483055156829, guid: ef6c590c1b1ab4d4db1b08a9c28e0423, type: 3}
   attackPoint: {fileID: 755408046}
   attackRange: 0.8
   enemy:
@@ -2014,8 +2030,8 @@ Transform:
   m_GameObject: {fileID: 755408045}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.307, y: 0.009, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 433090640}

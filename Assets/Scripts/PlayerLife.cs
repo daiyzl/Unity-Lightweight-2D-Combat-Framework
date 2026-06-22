@@ -94,9 +94,10 @@ public class PlayerLife : MonoBehaviour
         IsDashing = true;
         Debug.Log("开始冲刺");
         // 抓取玩家当前的真实朝向
-        // 如果 flipX 为 true 表示面朝左，那就往左冲 (-1)，否则往右 (1)
-        float dashDir = playerSR.flipX ? -1f : 1f;
+        // 如果localScale.x 为 true 表示面朝左，那就往左冲 (-1)，否则往右 (1)
+        float dashDir = playerSR.transform.localScale.x < 0 ? -1f : 1f;
 
+        Debug.Log("dashDir" + dashDir);
         // 冲刺期间关闭重力，防止玩家掉下悬崖边缘产生下坠曲线
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;

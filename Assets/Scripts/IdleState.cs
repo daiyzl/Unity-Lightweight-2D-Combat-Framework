@@ -61,7 +61,6 @@ public class PatrolState:IState//巡逻
     {
         manager.FlipTo(paramenter.PatrolPoints[PatrolPosition]);//转向逻辑
 
-        // 🌟 终极防线：视野与领地双重判定
         if (paramenter.target != null)
         {
             // 获取领地的绝对左右边界
@@ -70,7 +69,7 @@ public class PatrolState:IState//巡逻
 
             float targetPX = paramenter.target.position.x;
 
-            // 只有当玩家明确在追击点范围内，且我自己位于追击点范围内，我才开始追！
+            // 只有当玩家明确在追击点范围内，且我自己位于追击点范围内，才开始追
             if (targetPX >= leftBound
                 && targetPX <= rightBound
                 && manager.transform.position.x <= rightBound
@@ -159,7 +158,7 @@ public class ChaseState:IState//追击
             //Debug.Log("正在追击");
             //Debug.Log("和玩家距离" + Vector2.Distance(manager.transform.position, paramenter.target.position));
 
-        // 距离够近了，且 CD 已经转好了，才允许进入攻击状态！
+        // 距离够近了，且 CD 已经转好了，才允许进入攻击状态
         if (Vector2.Distance(manager.transform.position, paramenter.target.position) < 1.0f)
         {
             // 检查：现在的时间 >= 上次攻击的时间 + 冷却时间
@@ -170,7 +169,7 @@ public class ChaseState:IState//追击
             }
             else
             {
-                // 如果 CD 没转好，怪物就只会跟着玩家跑（或者你可以在这里写一个后撤步逻辑）
+                // 如果 CD 没转好，怪物就只会跟着玩家跑
                 Debug.Log("技能 CD 中，只追击，不攻击！");
             }
         }
@@ -186,7 +185,7 @@ public class AttackState : IState
     private StateType enemyState;
     private Paramenter paramenter;
     private FSM manager;
-    private Rigidbody2D rb; // 注意：2D 游戏必须用 Rigidbody2D！
+    private Rigidbody2D rb; 
     private SpriteRenderer sr;
     private enemyhitbox myHitBox;
 
@@ -225,7 +224,7 @@ public class AttackState : IState
 
     public void OnExit()
     {
-        // 如果因为特殊情况被强行打断（比如怪物死了），停止所有协程
+        // 如果因为特殊情况被强行打断，停止所有协程
         manager.StopAllCoroutines();
         IsAttacking = false;
         sr.color = Color.white; // 恢复颜色

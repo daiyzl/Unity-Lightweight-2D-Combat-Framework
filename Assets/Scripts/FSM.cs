@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static JuiceManager;
+using Unity.Mathematics;
 
 public enum StateType
 {
@@ -15,6 +16,7 @@ public class Paramenter
     public float moveSpeed;//正常移动速度
     public float chaseSpeed;//追击移动速度
     public float idleTime;//静止时间
+    public int defence;
     public Transform[] PatrolPoints;//巡逻点
     public Transform[] ChasePoints;//追击点
     public Transform target;//目标
@@ -28,6 +30,7 @@ public class Paramenter
     // 攻击冷却相关
     public float attackCooldown = 2.0f; // 两次攻击之间至少间隔 2 秒
     public float lastAttackTime = -999f; // 记录上次攻击的时刻（初始为负数，保证第一次见面就能直接打）
+    public Func<int, int, int> luaDamageCalculator;
 }
 public class FSM : MonoBehaviour
 {
@@ -95,10 +98,24 @@ public class FSM : MonoBehaviour
     // 处理怪物受伤的逻辑
     public void TakeDamage(int damageAmount)
     {
-        // 1. 扣除档案袋里的血量
-        paramenter.health -= damageAmount;
-        //Debug.Log("怪物受到伤害！当前血量：" + paramenter.health);
+        int finalDamage = damageAmount;
+        if (paramenter.luaDamageCalculator != null)
+        {
+            int myDefense = paramenter.defence; 
 
+            //把 2 个参数一起喂给 Lua
+            finalDamage = paramenter.luaDamageCalculator(damageAmount, myDefense);
+
+            Debug.Log($"[Lua计算] 玩家基础伤害:{damageAmount}，怪物防御:{myDefense}，Lua返回最终伤害:{finalDamage}");
+        }
+        else
+        {
+            // 如果没挂载 Lua，就用普通的 C# 减法
+            finalDamage = damageAmount - paramenter.defence;
+            if (finalDamage < 1) finalDamage = 1;
+        }
+        // 1. 扣除档案袋里的血量
+        paramenter.health -= finalDamage;
         // 2. 在这里播放受击闪红特效、击退或者顿帧
         JuiceManager.Instance.HitStop(0.05f);
         JuiceManager.Instance.CameraShake(0.05f,0.05f);

@@ -1,0 +1,16 @@
+-- FrogConfig.lua
+hp = 40
+dashForce = 18.0
+jumpForceY=15.0
+defence=0
+function CalculateRealDamage(baseDamage, playerDefense)
+    -- 我们可以随意在这里使用 if-else 等逻辑
+    local finalDamage = (baseDamage * 6) - playerDefense
+    
+    -- 兜底逻辑：伤害不能刮痧（最低为1）
+    if finalDamage < 1 then 
+        finalDamage = 1 
+    end
+    
+    return finalDamage
+end

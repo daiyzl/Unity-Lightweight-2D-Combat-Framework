@@ -12,12 +12,10 @@ public class enemyAI : MonoBehaviour
     private Animator anim; // 动画组件
     private enum frogState { idle, run } // 状态枚举
     private Transform targetPoint; // 当前要去的点
-    private bool isChasing;       // 是否在追人
 
     void Start()
     {
         targetPoint = pointA;
-        isChasing = false;
         anim= GetComponent<Animator>();
     }
 }

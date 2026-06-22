@@ -35,8 +35,8 @@ public class PlayerAttack : MonoBehaviour
         //生成视觉剑气
         GameObject slash = Instantiate(slashPrefab, attackPoint.position, Quaternion.identity);
 
-        // 如果玩家面朝左边，把剑气也翻转过去
-        if (transform.localScale.x < 0)
+        // 如果玩家面朝右边，把剑气也翻转过去
+        if (transform.localScale.x > 0)
         {
             slash.transform.localScale = new Vector3(-slash.transform.localScale.x, slash.transform.localScale.y, 1);
         }
