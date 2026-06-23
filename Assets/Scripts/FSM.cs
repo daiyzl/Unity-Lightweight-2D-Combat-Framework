@@ -114,9 +114,9 @@ public class FSM : MonoBehaviour
             finalDamage = damageAmount - paramenter.defence;
             if (finalDamage < 1) finalDamage = 1;
         }
-        // 1. 扣除档案袋里的血量
+        //  扣除档案袋里的血量
         paramenter.health -= finalDamage;
-        // 2. 在这里播放受击闪红特效、击退或者顿帧
+        // 在这里播放受击闪红特效、击退或者顿帧
         JuiceManager.Instance.HitStop(0.05f);
         JuiceManager.Instance.CameraShake(0.05f,0.05f);
 

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using XLua;
 using static PlayerLife;
 
 public class PlayerStats : MonoBehaviour//控制玩家数值
@@ -41,22 +43,71 @@ public class PlayerStats : MonoBehaviour//控制玩家数值
     public int JumpCount => jumpcount;
 
     public event Action<int, int> HealthChanged;//定义应该事件，当血量变化时传递信息
+
+    // --- xLua 热更新组件 ---
+    private LuaEnv luaEnv;
+    private string luaFilePath;
+
     private void Awake()
     {
         if (_instance == null)
         {
             _instance = this;
-            // 玩家的血量和攻击力跨关卡继承
-             //DontDestroyOnLoad(gameObject); 
         }
         else
         {
             Destroy(gameObject);
         }
 
+        // 初始化 Lua 虚拟机和文件路径
+        luaEnv = new LuaEnv();
+        luaFilePath = Path.Combine(Application.dataPath, "XLuaFiles", "PlayerConfig.lua.txt");
+
+        // 游戏启动时加载一次数据
+        LoadLuaConfig();
+
         // 初始化血量
         currentHealth = maxHealth;
-        //Debug.Log("PlayerStats脚本 "+PlayerStats.Instance);
+    }
+    private void Update()
+    {
+        //按下 F5 重新加载玩家配置！
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            LoadLuaConfig();
+
+            // 热更新了最大血量后，发个广播，血条跟着变
+            HealthChanged?.Invoke(currentHealth, maxHealth);
+
+            Debug.Log("<color=green>[GM] 玩家数据 F5 热重载成功！</color>");
+        }
+    }
+
+    // 专门负责读取 Lua 数据的核心逻辑
+    private void LoadLuaConfig()
+    {
+        if (File.Exists(luaFilePath))
+        {
+            string luaCode = File.ReadAllText(luaFilePath);
+            luaEnv.DoString(luaCode);
+
+            // 从 Lua 环境中提取变量，覆盖 C# 的变量
+            maxHealth = luaEnv.Global.Get<int>("playerMaxHealth");
+            attackPower = luaEnv.Global.Get<int>("playerAttack");
+            speed = luaEnv.Global.Get<int>("playerSpeed");
+            jumpForce = luaEnv.Global.Get<float>("playerJumpForce");
+            jumpcount = luaEnv.Global.Get<int>("playerJumpCount");
+
+            // 如果热更新把最大血量改小了，当前血量不能超过最大值
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+        }
+        else
+        {
+            Debug.LogError($"找不到玩家配置文件，请检查路径: {luaFilePath}");
+        }
     }
 
     // 受到伤害的接口
@@ -90,6 +141,14 @@ public class PlayerStats : MonoBehaviour//控制玩家数值
     public void IncreaseAttack(int amount)
     {
         attackPower += amount;
+    }
+    // 清理内存
+    private void OnDestroy()
+    {
+        if (luaEnv != null)
+        {
+            luaEnv.Dispose();
+        }
     }
 }
 

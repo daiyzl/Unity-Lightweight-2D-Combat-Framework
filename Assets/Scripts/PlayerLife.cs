@@ -52,6 +52,7 @@ public class PlayerLife : MonoBehaviour
         if (collision.gameObject.CompareTag("trap"))
         {
             deathSoundEffect.Play();
+            PlayerStats.Instance.TakeDamage(PlayerStats.Instance.CurrentHealth);
             Die();
         }
         else if (collision.gameObject.CompareTag("enemy"))
@@ -75,18 +76,18 @@ public class PlayerLife : MonoBehaviour
     // 处理受击僵直的核心协程
     private IEnumerator KnockbackRoutine(int dir)
     {
-        IsKnockedBack = true; // 1. 上锁！
+        IsKnockedBack = true; //  上锁！
         Debug.Log("开始僵直协程");
-        // 2. 赋予击退速度
+        //  赋予击退速度
         rb.velocity = new Vector2(dir * KnockbackForce.x, KnockbackForce.y);
 
         // 播放受击动画，目前没有
         // anim.SetTrigger("hurt");
 
-        // 3. 等待僵直时间结束
+        // 等待僵直时间结束
         yield return new WaitForSeconds(knockbackDuration);
 
-        // 4. 僵直结束，解锁！
+        //僵直结束，解锁！
         IsKnockedBack = false;
     }
     private IEnumerator DashCoroutine()

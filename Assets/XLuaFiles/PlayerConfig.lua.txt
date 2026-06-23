@@ -1,0 +1,10 @@
+-- PlayerConfig.lua.txt
+-- 玩家核心数值配置表
+
+playerMaxHealth = 10
+playerAttack = 10
+playerSpeed = 6
+playerJumpForce = 8.5
+playerJumpCount = 1
+
+--以后的玩家的公式，写在这里

@@ -4,10 +4,10 @@ dashForce = 18.0
 jumpForceY=15.0
 defence=0
 function CalculateRealDamage(baseDamage, playerDefense)
-    -- 我们可以随意在这里使用 if-else 等逻辑
-    local finalDamage = (baseDamage * 6) - playerDefense
+    -- 使用 if-else 等逻辑
+    local finalDamage = (baseDamage * 1) - playerDefense--这个是怪物受到伤害的逻辑
     
-    -- 兜底逻辑：伤害不能刮痧（最低为1）
+    -- 伤害不能刮痧（最低为1）
     if finalDamage < 1 then 
         finalDamage = 1 
     end

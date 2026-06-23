@@ -17,46 +17,11 @@ public class PlayerPause : MonoBehaviour
      void Start()
     {
         //Debug.Log(PlayerStats.Instance);
-        // 1. 订阅暂停事件，并立刻同步当前的显示状态
+        // 订阅暂停事件，并立刻同步当前的显示状态
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPauseStateChanged += UpdatePause;//订阅GameManager的OnPauseStateChanged事件，当暂停状态发生变化时调用UpdatePauseTipText方法更新提示文本
             UpdatePause(GameManager.Instance.isPause);//在开始时调用UpdatePauseTipText方法，设置初始的提示文本状态
-        }
-        // 2. 订阅血量事件
-        if (PlayerStats.Instance != null)
-        {
-            PlayerStats.Instance.HealthChanged += UpdateHealth;
-
-            // 【关键修复】：游戏刚开始时，手动调用一次生成满血爱心
-            UpdateHealth(PlayerStats.Instance.CurrentHealth, PlayerStats.Instance.MaxHealth);
-        }
-        else
-        {
-            Debug.LogError("PlayerPause: 找不到 PlayerStats 单例，请检查执行顺序或场景配置！");
-        }
-    }
-    void UpdateHealth(int currentHealth, int maxHealth)
-    {
-        // 安全判断
-        if (heartParent == null || heartPrefab == null)
-        {
-            Debug.LogError("heartParent 或 heartPrefab 未赋值！");
-            return;
-        }
-
-        // 销毁旧爱心
-        foreach (Transform child in heartParent)
-            Destroy(child.gameObject);
-
-        // 生成新爱心
-        for (int i = 0; i < maxHealth; i++)
-        {
-            GameObject heartObj = Instantiate(heartPrefab, heartParent);
-            Image heartImg = heartObj.GetComponentInChildren<Image>(); // 👈 改成这个！
-
-            if (heartImg != null)
-                heartImg.sprite = i < currentHealth ? fullHeart : emptyHeart;
         }
     }
     void UpdatePause(bool Ispause)
@@ -69,8 +34,5 @@ public class PlayerPause : MonoBehaviour
         // 空判断，避免重启场景时干扰单例
         if (GameManager.Instance != null)
             GameManager.Instance.OnPauseStateChanged -= UpdatePause;//取消订阅GameManager的OnPauseStateChanged事件，防止内存泄漏
-
-        if (PlayerStats.Instance != null)
-            PlayerStats.Instance.HealthChanged -= UpdateHealth;//取消订阅PlayerStats的HealthChanged事件，防止内存泄漏
     }
 }
